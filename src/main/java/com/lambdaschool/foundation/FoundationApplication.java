@@ -72,7 +72,7 @@ public class FoundationApplication
             .add(converter);
 
         // URL of the API we are accessing
-        String requestURL = "http://citrics-ds.eba-jvvvymfn.us-east-1.elasticbeanstalk.com/1222";
+        String requestURL = "http://citrics-ds.eba-jvvvymfn.us-east-1.elasticbeanstalk.com/5";
 
         // create the responseType expected. In this case YearFact is the type
         ParameterizedTypeReference<DSCity> responseType = new ParameterizedTypeReference<>() {
