@@ -2,16 +2,23 @@ package com.lambdaschool.foundation.models;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "cities")
-public class City extends Auditable
-{
+public class City extends Auditable {
+
 
     /**
      * Generate City id
@@ -27,7 +34,7 @@ public class City extends Auditable
     private String citynamestate;
 
     /**
-     *  The City population (int)
+     * The City population (int)
      */
     private double population;
 
@@ -47,54 +54,53 @@ public class City extends Auditable
     private float lon;
 
 
-
     /**
-     *  The City's average age (float)
+     * The City's average age (float)
      */
     private double averageage;
 
     /**
-     *  The City's average income per household (double)
+     * The City's average income per household (double)
      */
     private double averagehouseholdincome;
 
     /**
-     *  The City's average income per individual (double)
+     * The City's average income per individual (double)
      */
     private double averageindividualincome;
 
     /**
-     *  The City's average cost to buy a house (double)
+     * The City's average cost to buy a house (double)
      */
     private double averagehouseingcost;
 
     /**
-     *  The City's average cost to rent a house (double)
+     * The City's average cost to rent a house (double)
      */
     private double averagerentcost;
 
     /**
-     *  The City's cost of living index (float)
+     * The City's cost of living index (float)
      */
     private double costoflivingindex;
 
-    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "city",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true)
     @JsonIgnoreProperties(value = "city")
     private Set<UserCities> users = new HashSet<>();
 
     /**
      * The Default constructor needed by JPA
      */
-    public City()
-    {
+    public City() {
     }
 
     /**
      * The constructor with the non-nullable fields
      */
     public City(
-        @NotNull String citynamestate)
-    {
+        @NotNull String citynamestate) {
         this.citynamestate = citynamestate;
     }
 
@@ -109,8 +115,7 @@ public class City extends Auditable
         double averageindividualincome,
         double averagehouseingcost,
         double averagerentcost,
-        float costoflivingindex)
-    {
+        float costoflivingindex) {
         this.citynamestate = citynamestate;
         this.populationdensityrating = populationdensityrating;
         this.averageage = averageage;
@@ -129,8 +134,7 @@ public class City extends Auditable
         double averageincome,
         int averagetemperature,
         float lat,
-        float lon)
-    {
+        float lon) {
         this.citynamestate = citynamestate;
         this.populationdensityrating = populationdensityrating;
         this.safteyratingscore = safteyratingscore;
@@ -150,8 +154,7 @@ public class City extends Auditable
         double averagehouseingcost,
         double averagerentcost,
         float costoflivingindex
-    )
-    {
+    ) {
         this.citynamestate = citynamestate;
         this.population = population;
         this.averageage = averageage;
@@ -165,233 +168,200 @@ public class City extends Auditable
     /**
      * Getter for the CityID
      */
-    public long getCityid()
-    {
+    public long getCityid() {
         return cityid;
     }
 
     /**
      * Setter for the CityID
      */
-    public void setCityid(long cityid)
-    {
+    public void setCityid(long cityid) {
         this.cityid = cityid;
     }
 
     /**
      * Getter for the City name
      */
-    public String getCitynamestate()
-    {
+    public String getCitynamestate() {
         return citynamestate;
     }
 
     /**
      * Setter for the City name
      */
-    public void setCitynamestate(String citynamestate)
-    {
+    public void setCitynamestate(String citynamestate) {
         this.citynamestate = citynamestate;
     }
 
-    public double getPopulation()
-    {
+    public double getPopulation() {
         return population;
     }
 
-    public void setPopulation(double population)
-    {
+    public void setPopulation(double population) {
         this.population = population;
     }
 
     /**
      * Getter for the City population
      */
-    public int getPopulationdensityrating()
-    {
+    public int getPopulationdensityrating() {
         return populationdensityrating;
     }
 
     /**
      * Setter for the City population
      */
-    public void setPopulationdensityrating(int population)
-    {
+    public void setPopulationdensityrating(int population) {
         this.populationdensityrating = population;
     }
 
     /**
      * Getter for the City's average age
      */
-    public double getAverageage()
-    {
+    public double getAverageage() {
         return averageage;
     }
 
     /**
      * Setter for the City's average age
      */
-    public void setAverageage(double averageage)
-    {
+    public void setAverageage(double averageage) {
         this.averageage = averageage;
     }
 
     /**
      * Getter for the City's average household income
      */
-    public double getAveragehouseholdincome()
-    {
+    public double getAveragehouseholdincome() {
         return averagehouseholdincome;
     }
 
     /**
      * Setter for the City's average household income
      */
-    public void setAveragehouseholdincome(double averagehouseholdincome)
-    {
+    public void setAveragehouseholdincome(double averagehouseholdincome) {
         this.averagehouseholdincome = averagehouseholdincome;
     }
 
     /**
      * Getter for the City's average individual income
      */
-    public double getAverageindividualincome()
-    {
+    public double getAverageindividualincome() {
         return averageindividualincome;
     }
 
     /**
      * Setter for the City's average individual income
      */
-    public void setAverageindividualincome(double averageindividualincome)
-    {
+    public void setAverageindividualincome(double averageindividualincome) {
         this.averageindividualincome = averageindividualincome;
     }
 
     /**
      * Getter for the City's average housing cost
      */
-    public double getAveragehouseingcost()
-    {
+    public double getAveragehouseingcost() {
         return averagehouseingcost;
     }
 
     /**
      * Setter for the City's average housing cost
      */
-    public void setAveragehouseingcost(double averagehouseingcost)
-    {
+    public void setAveragehouseingcost(double averagehouseingcost) {
         this.averagehouseingcost = averagehouseingcost;
     }
 
     /**
      * Getter for the City's average renting cost
      */
-    public double getAveragerentcost()
-    {
+    public double getAveragerentcost() {
         return averagerentcost;
     }
 
     /**
      * Setter for the City's average renting cost
      */
-    public void setAveragerentcost(double averagerentcost)
-    {
+    public void setAveragerentcost(double averagerentcost) {
         this.averagerentcost = averagerentcost;
     }
 
     /**
      * Getter for the City's cost of living index
      */
-    public double getCostoflivingindex()
-    {
+    public double getCostoflivingindex() {
         return costoflivingindex;
     }
 
     /**
      * Setter for the City's cost of living index
      */
-    public void setCostoflivingindex(double costoflivingindex)
-    {
+    public void setCostoflivingindex(double costoflivingindex) {
         this.costoflivingindex = costoflivingindex;
     }
 
-    public Set<UserCities> getUsers()
-    {
+    public Set<UserCities> getUsers() {
         return users;
     }
 
-    public void setUsers(Set<UserCities> users)
-    {
+    public void setUsers(Set<UserCities> users) {
         this.users = users;
     }
 
-    public int getSafteyratingscore()
-    {
+    public int getSafteyratingscore() {
         return safteyratingscore;
     }
 
-    public void setSafteyratingscore(int safteyratingscore)
-    {
+    public void setSafteyratingscore(int safteyratingscore) {
         this.safteyratingscore = safteyratingscore;
     }
 
-    public int getCostoflivingscore()
-    {
+    public int getCostoflivingscore() {
         return costoflivingscore;
     }
 
-    public void setCostoflivingscore(int costoflivingscore)
-    {
+    public void setCostoflivingscore(int costoflivingscore) {
         this.costoflivingscore = costoflivingscore;
     }
 
-    public double getAverageincome()
-    {
+    public double getAverageincome() {
         return averageincome;
     }
 
-    public void setAverageincome(double averageincome)
-    {
+    public void setAverageincome(double averageincome) {
         this.averageincome = averageincome;
     }
 
-    public int getAveragetemperature()
-    {
+    public int getAveragetemperature() {
         return averagetemperature;
     }
 
-    public void setAveragetemperature(int averagetemperature)
-    {
+    public void setAveragetemperature(int averagetemperature) {
         this.averagetemperature = averagetemperature;
     }
 
-    public float getLat()
-    {
+    public float getLat() {
         return lat;
     }
 
-    public void setLat(float lat)
-    {
+    public void setLat(float lat) {
         this.lat = lat;
     }
 
-    public float getLon()
-    {
+    public float getLon() {
         return lon;
     }
 
-    public void setLon(float lon)
-    {
+    public void setLon(float lon) {
         this.lon = lon;
     }
+
+
 
     /**
      * toString override method
      */
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "City{" +
             "cityid=" + cityid +
             ", citynamestate='" + citynamestate + '\'' +

@@ -2,13 +2,21 @@ package com.lambdaschool.foundation.services;
 
 import com.lambdaschool.foundation.exceptions.ResourceNotFoundException;
 import com.lambdaschool.foundation.models.City;
+import com.lambdaschool.foundation.models.CityIdName;
 import com.lambdaschool.foundation.models.DSCity;
 import com.lambdaschool.foundation.repository.CityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Transactional
@@ -20,6 +28,55 @@ public class CityServiceImpl implements CityService
      */
     @Autowired
     private CityRepository cityrepo;
+
+    @Autowired
+    private CityService cityService;
+
+    @Override
+    public City pullCities() {
+
+        // URL of the API we are accessing
+        String requestURL = "http://citrics-ds.eba-jvvvymfn.us-east-1.elasticbeanstalk.com/7";
+        //        String requestURL = "https://labs27-c-citrics-api.herokuapp.com/cities/all";
+        /*
+         * Creates the object that is needed to do a client side Rest API call.
+         * WE are the client getting data from a remote API.
+         */
+        RestTemplate restTemplate = new RestTemplate();
+
+        // telling our RestTemplate what format to expect, in this case Json
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));
+        restTemplate.getMessageConverters()
+            .add(converter);
+
+        // create the responseType expected. In this case DSCity is the type
+        ParameterizedTypeReference<DSCity> responseType = new ParameterizedTypeReference<>() {
+        };
+        ResponseEntity<DSCity> responseEntity = restTemplate.exchange(requestURL,
+            HttpMethod.GET,
+            null,
+            responseType);
+        DSCity ourCityData = responseEntity.getBody();
+        cityService.saveDs(ourCityData);
+        /**
+         * Loop to fetch cities from DS API
+         */
+        //                for (int i = 1; i < 126; i++)
+        //                {
+        //                    // create responseEntity
+        //                    ResponseEntity<DSCity> responseEntity = restTemplate.exchange(requestURL + i,
+        //                        HttpMethod.GET,
+        //                        null,
+        //                        responseType);
+        //
+        //                    // print to the console
+        //                    DSCity ourCityData = responseEntity.getBody();
+        //
+        ////                    cityService.saveDs(ourCityData);
+        //                }
+        return null;
+    }
 
     /**
      * Find all cities in DB
@@ -115,5 +172,15 @@ public class CityServiceImpl implements CityService
             throw new ResourceNotFoundException("City name " + name + " not found!");
         }
         return c;
+    }
+
+    @Override
+    public List<CityIdName> findAllIds()
+    {
+        List<CityIdName> cities = new ArrayList<>();
+
+        cityrepo.findAll().iterator().forEachRemaining((city) -> cities.add(new CityIdName(city.getCityid(), city.getCitynamestate())));
+
+        return cities;
     }
 }

@@ -24,7 +24,7 @@ import java.util.Collections;
  * after the application context has been loaded.
  */
 @Transactional
-@Component
+//@Component
 public class SeedData
     implements CommandLineRunner
 {
@@ -51,41 +51,41 @@ public class SeedData
     public void run(String[] args) throws
                                    Exception
     {
-        // URL of the API we are accessing
-        String requestURL = "http://citrics-ds.eba-jvvvymfn.us-east-1.elasticbeanstalk.com/";
-        //        String requestURL = "https://labs27-c-citrics-api.herokuapp.com/cities/all";
-        /*
-         * Creates the object that is needed to do a client side Rest API call.
-         * WE are the client getting data from a remote API.
-         */
-        RestTemplate restTemplate = new RestTemplate();
-
-        // telling our RestTemplate what format to expect, in this case Json
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));
-        restTemplate.getMessageConverters()
-            .add(converter);
-
-        // create the responseType expected. In this case DSCity is the type
-        ParameterizedTypeReference<DSCity> responseType = new ParameterizedTypeReference<>() {
-        };
-
-        /**
-         * Loop to fetch cities from DS API
-         */
-        for (int i = 1; i < 126; i++)
-        {
-            // create responseEntity
-            ResponseEntity<DSCity> responseEntity = restTemplate.exchange(requestURL + i,
-                HttpMethod.GET,
-                null,
-                responseType);
-
-            // print to the console
-            DSCity ourCityData = responseEntity.getBody();
-
-            cityService.saveDs(ourCityData);
-        }
+//        // URL of the API we are accessing
+//        String requestURL = "http://citrics-ds.eba-jvvvymfn.us-east-1.elasticbeanstalk.com/";
+//        //        String requestURL = "https://labs27-c-citrics-api.herokuapp.com/cities/all";
+//        /*
+//         * Creates the object that is needed to do a client side Rest API call.
+//         * WE are the client getting data from a remote API.
+//         */
+//        RestTemplate restTemplate = new RestTemplate();
+//
+//        // telling our RestTemplate what format to expect, in this case Json
+//        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+//        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));
+//        restTemplate.getMessageConverters()
+//            .add(converter);
+//
+//        // create the responseType expected. In this case DSCity is the type
+//        ParameterizedTypeReference<DSCity> responseType = new ParameterizedTypeReference<>() {
+//        };
+//
+//        /**
+//         * Loop to fetch cities from DS API
+//         */
+//        for (int i = 1; i < 126; i++)
+//        {
+//            // create responseEntity
+//            ResponseEntity<DSCity> responseEntity = restTemplate.exchange(requestURL + i,
+//                HttpMethod.GET,
+//                null,
+//                responseType);
+//
+//            // print to the console
+//            DSCity ourCityData = responseEntity.getBody();
+//
+//            cityService.saveDs(ourCityData);
+//        }
 
         /**
          * Extra dummy data for 5 cities until DS gets V2 completed

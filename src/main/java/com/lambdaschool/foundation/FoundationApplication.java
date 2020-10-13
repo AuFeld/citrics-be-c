@@ -1,5 +1,8 @@
 package com.lambdaschool.foundation;
 
+import com.lambdaschool.foundation.models.City;
+import com.lambdaschool.foundation.services.CityService;
+import com.lambdaschool.foundation.services.CityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -55,8 +58,10 @@ public class FoundationApplication
 
         if (!stop)
         {
+//            CityServiceImpl.pullCities();
             SpringApplication.run(FoundationApplication.class,
                 args);
+
         } else
         {
             System.out.println("Environment Variables NOT SET CORRECTLY");
