@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DSCity {
-    private long city_id;
     private String city;
     private double population;
     private double median_age;
@@ -12,10 +11,11 @@ public class DSCity {
     private double median_individual_income;
     private double median_home_cost;
     private double median_rent;
-    private double Cost_of_Living_Index;
+    private double Cost_of_Living_Index = 55.5;
 
-    public double getCity_id() {
-        return city_id;
+
+    public DSCity()
+    {
     }
 
     public String getCity() {
@@ -62,8 +62,8 @@ public class DSCity {
         return median_home_cost;
     }
 
-    public void setMedian_home_cost(double house) {
-        this.median_home_cost = house;
+    public void setMedian_home_cost(double median_home_cost) {
+        this.median_home_cost = median_home_cost;
     }
 
     public double getMedian_rent() {
@@ -78,12 +78,13 @@ public class DSCity {
         return Cost_of_Living_Index;
     }
 
-    public void setCost_of_Living_Index(double Cost_of_Living_Index) {
-        this.Cost_of_Living_Index = Cost_of_Living_Index;
+    public void setCost_of_Living_Index(float cost_of_Living_Index) {
+        this.Cost_of_Living_Index = cost_of_Living_Index;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "DSCity{" +
             "city='" + city + '\'' +
             ", population=" + population +
