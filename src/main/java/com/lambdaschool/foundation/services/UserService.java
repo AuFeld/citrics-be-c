@@ -1,6 +1,7 @@
 package com.lambdaschool.foundation.services;
 
 import com.lambdaschool.foundation.models.User;
+import com.lambdaschool.foundation.models.UserCities;
 
 import java.util.List;
 
@@ -79,4 +80,10 @@ public interface UserService
      * Deletes all record and their associated records from the database
      */
     public void deleteAll();
+
+    /**
+     * Finds all favorites
+     */
+    List<UserCities> findCities(User user,
+                                long id);
 }

@@ -2,6 +2,8 @@ package com.lambdaschool.foundation.services;
 
 import com.lambdaschool.foundation.exceptions.ResourceNotFoundException;
 import com.lambdaschool.foundation.models.User;
+import com.lambdaschool.foundation.models.UserCities;
+import com.lambdaschool.foundation.repository.CityRepository;
 import com.lambdaschool.foundation.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,8 +18,7 @@ import java.util.List;
 @Transactional
 @Service(value = "userService")
 public class UserServiceImpl
-    implements UserService
-{
+    implements UserService {
     /**
      * Connects this service to the User table.
      */
@@ -25,26 +26,26 @@ public class UserServiceImpl
     private UserRepository userrepos;
 
     @Autowired
+    private CityRepository cityrepos;
+
+    @Autowired
     private HelperFunctions helperFunctions;
 
     @Override
     public User findUserById(long id) throws
-                                      ResourceNotFoundException
-    {
+                                      ResourceNotFoundException {
         return userrepos.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("User id " + id + " not found!"));
     }
 
     @Override
-    public List<User> findByNameContaining(String username)
-    {
+    public List<User> findByNameContaining(String username) {
 
         return userrepos.findByUsernameContainingIgnoreCase(username.toLowerCase());
     }
 
     @Override
-    public List<User> findAll()
-    {
+    public List<User> findAll() {
         List<User> list = new ArrayList<>();
         /*
          * findAll returns an iterator set.
@@ -58,19 +59,16 @@ public class UserServiceImpl
 
     @Transactional
     @Override
-    public void delete(long id)
-    {
+    public void delete(long id) {
         userrepos.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("User id " + id + " not found!"));
         userrepos.deleteById(id);
     }
 
     @Override
-    public User findByName(String name)
-    {
+    public User findByName(String name) {
         User uu = userrepos.findByUsername(name.toLowerCase());
-        if (uu == null)
-        {
+        if (uu == null) {
             throw new ResourceNotFoundException("User name " + name + " not found!");
         }
         return uu;
@@ -78,13 +76,11 @@ public class UserServiceImpl
 
     @Transactional
     @Override
-    public User save(User user)
-    {
+    public User save(User user) {
 
         User newUser = new User();
 
-        if (user.getUserid() != 0)
-        {
+        if (user.getUserid() != 0) {
             userrepos.findById(user.getUserid())
                 .orElseThrow(() -> new ResourceNotFoundException("User id " + user.getUserid() + " not found!"));
             newUser.setUserid(user.getUserid());
@@ -100,23 +96,19 @@ public class UserServiceImpl
     @Override
     public User update(
         User user,
-        long id)
-    {
+        long id) {
         User currentUser = findUserById(id);
 
         // update own thing
         // admin update
-        if (helperFunctions.isAuthorizedToMakeChange(currentUser.getUsername()))
-        {
-            if (user.getUsername() != null)
-            {
+        if (helperFunctions.isAuthorizedToMakeChange(currentUser.getUsername())) {
+            if (user.getUsername() != null) {
                 currentUser.setUsername(user.getUsername()
                     .toLowerCase());
             }
 
             return userrepos.save(currentUser);
-        } else
-        {
+        } else {
             // note we should never get to this line but is needed for the compiler
             // to recognize that this exception can be thrown
             throw new ResourceNotFoundException("This user is not authorized to make change");
@@ -125,8 +117,17 @@ public class UserServiceImpl
 
     @Transactional
     @Override
-    public void deleteAll()
-    {
+    public void deleteAll() {
         userrepos.deleteAll();
+    }
+
+    @Override
+    public List<UserCities> findCities(User user, long id) {
+        List<UserCities> list = new ArrayList<>();
+        if (helperFunctions.isAuthorizedToMakeChange(user.getUsername())) {
+
+            list = user.getFavcities();
+        }
+        return list;
     }
 }
