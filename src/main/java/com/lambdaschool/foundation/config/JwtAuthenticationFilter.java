@@ -15,8 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class JwtAuthenticationFilter extends OncePerRequestFilter
-{
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
     // A very specific implementation of userrepos.findByUserName was needed for this filter,
     // so the repository is used directly.
     @Autowired
@@ -27,42 +26,37 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
     UserService userService;
 
     /**
-     * A method in this controller adds a new user to the application with the role User so needs access to Role Services to do this.
+     * A method in this controller adds a new user to the application with the role User so needs access to Role
+     * Services to do this.
      */
-//    @Autowired
-//    private RoleService roleService;
-
+    //    @Autowired
+    //    private RoleService roleService;
     @Override
     protected void doFilterInternal(
         HttpServletRequest httpServletRequest,
         HttpServletResponse httpServletResponse,
-        FilterChain filterChain) throws ServletException, IOException
-    {
+        FilterChain filterChain) throws ServletException, IOException {
         // find the username of the authenticated user
         Authentication authentication = SecurityContextHolder.getContext()
             .getAuthentication();
 
-        if (!(authentication instanceof AnonymousAuthenticationToken))
-        {
-            if (userrepos.findByUsername(authentication.getName()) == null)
-            {
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            if (userrepos.findByUsername(authentication.getName()) == null) {
                 User newUser = new User(authentication.getName());
 
                 // adds a default USER role to this new user
-//                Set<UserRoles> newRoles = new HashSet<>();
-//                newRoles.add(new UserRoles(newUser,
-//                    roleService.findByName("user")));
-//                newUser.setRoles(newRoles);
+                //                Set<UserRoles> newRoles = new HashSet<>();
+                //                newRoles.add(new UserRoles(newUser,
+                //                    roleService.findByName("user")));
+                //                newUser.setRoles(newRoles);
 
                 userService.save(newUser);
-            } else
-            {
+            } else {
                 // we already have this user so nothing to update
             }
 
             // continue the filter chain.
-        } else
-        {
+        } else {
             // we do not have a user so nothing to check!
         }
         filterChain.doFilter(httpServletRequest,

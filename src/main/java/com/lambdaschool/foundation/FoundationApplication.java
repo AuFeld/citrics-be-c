@@ -6,15 +6,24 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.security.Principal;
 
 /**
  * Main class to start the application.
  */
+//@EnableResourceServer
+//@Controller
+//@RequestMapping("/")
 @EnableJpaAuditing
 @SpringBootApplication
 @EnableScheduling
-public class FoundationApplication
-{
+public class FoundationApplication {
     /**
      * Connect to the system environment where environment variables live.
      */
@@ -28,14 +37,13 @@ public class FoundationApplication
 
     /**
      * If an application relies on an environment variable, check to make sure that environment variable is available!
-     * If the environment variable is not available, you could set a default value, or as is done here, stop execution of the program
+     * If the environment variable is not available, you could set a default value, or as is done here, stop
+     * execution of the program
      *
      * @param envvar The system environment where environment variable live
      */
-    private static void checkEnvironmentVariable(String envvar)
-    {
-        if (System.getenv(envvar) == null)
-        {
+    private static void checkEnvironmentVariable(String envvar) {
+        if (System.getenv(envvar) == null) {
             stop = true;
         }
     }
@@ -45,21 +53,26 @@ public class FoundationApplication
      *
      * @param args Not used in this application.
      */
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         // Check to see if the environment variables exists. If they do not, stop execution of application.
-//        checkEnvironmentVariable("OAUTHCLIENTID");
-//        checkEnvironmentVariable("OAUTHCLIENTSECRET");
-//        checkEnvironmentVariable("OKTA_CLIENT_ID:");
+        checkEnvironmentVariable("OAUTHCLIENTID");
+        checkEnvironmentVariable("OAUTHCLIENTSECRET");
+        checkEnvironmentVariable("OKTA_CLIENT_ID:");
 
 
-        if (!stop)
-        {
+        if (!stop) {
             SpringApplication.run(FoundationApplication.class,
                 args);
-        } else
-        {
+        } else {
             System.out.println("Environment Variables NOT SET CORRECTLY");
         }
+
     }
+
+//    @RequestMapping(method = RequestMethod.GET)
+//    @ResponseBody
+//    public String welcomeToCitrics(Principal principal) {
+//        return "Hello " + principal.getName() + " From the Labs27 Citrics-C team! Please review documentation for " +
+//            "valid endpoint.";
+//    }
 }

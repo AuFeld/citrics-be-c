@@ -13,8 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 public class User
-    extends Auditable
-{
+    extends Auditable {
     /**
      * The primary key (long) of the users table.
      */
@@ -30,17 +29,18 @@ public class User
     private String username;
 
     /**
-    *The list that holds the users favorite cities
-    */
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties(value = "user", allowSetters = true)
+     * The list that holds the users favorite cities
+     */
+    @OneToMany(mappedBy = "user",
+        cascade = CascadeType.ALL)
+    @JsonIgnoreProperties(value = "user",
+        allowSetters = true)
     private List<UserCities> favcities = new ArrayList<>();
 
     /**
      * Default constructor used primarily by the JPA.
      */
-    public User()
-    {
+    public User() {
     }
 
     /**
@@ -50,8 +50,7 @@ public class User
      *
      * @param username The username (String) of the user
      */
-    public User(String username)
-    {
+    public User(String username) {
         setUsername(username);
     }
 
@@ -60,8 +59,7 @@ public class User
      *
      * @return the userid (long) of the user
      */
-    public long getUserid()
-    {
+    public long getUserid() {
         return userid;
     }
 
@@ -70,8 +68,7 @@ public class User
      *
      * @param userid the new userid (long) of the user
      */
-    public void setUserid(long userid)
-    {
+    public void setUserid(long userid) {
         this.userid = userid;
     }
 
@@ -80,8 +77,7 @@ public class User
      *
      * @return the username (String) lowercase
      */
-    public String getUsername()
-    {
+    public String getUsername() {
         return username;
     }
 
@@ -90,23 +86,19 @@ public class User
      *
      * @param username the new username (String) converted to lowercase
      */
-    public void setUsername(String username)
-    {
+    public void setUsername(String username) {
         this.username = username.toLowerCase();
     }
 
     /**
-     *
      * getter and setters for user's fav cities
      */
 
-    public List<UserCities> getFavcities()
-    {
+    public List<UserCities> getFavcities() {
         return favcities;
     }
 
-    public void setFavcities(List<UserCities> favCities)
-    {
+    public void setFavcities(List<UserCities> favCities) {
         this.favcities = favCities;
     }
 
@@ -114,8 +106,7 @@ public class User
      * ToString override method
      */
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "User{" +
             "userid=" + userid +
             ", username='" + username + '\'' +
@@ -126,24 +117,25 @@ public class User
     /**
      * Keeping this commented out code for future feature User Authentication
      *
-     * Internally, user security requires a list of authorities, roles, that the user has. This method is a simple way to provide those.
+     * Internally, user security requires a list of authorities, roles, that the user has. This method is a simple
+     * way to provide those.
      * Note that SimpleGrantedAuthority requests the format ROLE_role name all in capital letters!
      *
      * @return The list of authorities, roles, this user object has
      */
-//    @JsonIgnore
-//    public List<SimpleGrantedAuthority> getAuthority()
-//    {
-//        List<SimpleGrantedAuthority> rtnList = new ArrayList<>();
-//
-//        for (UserRoles r : this.roles)
-//        {
-//            String myRole = "ROLE_" + r.getRole()
-//                .getName()
-//                .toUpperCase();
-//            rtnList.add(new SimpleGrantedAuthority(myRole));
-//        }
-//
-//        return rtnList;
-//    }
+    //    @JsonIgnore
+    //    public List<SimpleGrantedAuthority> getAuthority()
+    //    {
+    //        List<SimpleGrantedAuthority> rtnList = new ArrayList<>();
+    //
+    //        for (UserRoles r : this.roles)
+    //        {
+    //            String myRole = "ROLE_" + r.getRole()
+    //                .getName()
+    //                .toUpperCase();
+    //            rtnList.add(new SimpleGrantedAuthority(myRole));
+    //        }
+    //
+    //        return rtnList;
+    //    }
 }

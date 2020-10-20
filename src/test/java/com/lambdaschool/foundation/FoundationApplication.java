@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * Main class to start the application.
  */
-
 @SpringBootApplication
 public class FoundationApplication
 {

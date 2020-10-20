@@ -1,6 +1,5 @@
 package com.lambdaschool.foundation;
 
-import com.lambdaschool.foundation.models.City;
 import com.lambdaschool.foundation.models.DSCity;
 import com.lambdaschool.foundation.services.CityService;
 import com.lambdaschool.foundation.services.UserService;
@@ -24,10 +23,9 @@ import java.util.Collections;
  * after the application context has been loaded.
  */
 @Transactional
-//@Component
+@Component
 public class SeedData
-    implements CommandLineRunner
-{
+    implements CommandLineRunner {
     /**
      * Connects the user service to this process
      */
@@ -49,8 +47,7 @@ public class SeedData
     @Transactional
     @Override
     public void run(String[] args) throws
-                                   Exception
-    {
+                                   Exception {
         // URL of the API we are accessing
         String requestURL = "http://citrics-ds.eba-jvvvymfn.us-east-1.elasticbeanstalk.com/";
         //        String requestURL = "https://labs27-c-citrics-api.herokuapp.com/cities/all";
@@ -73,8 +70,7 @@ public class SeedData
         /**
          * Loop to fetch cities from DS API
          */
-        for (int i = 1; i < 1278; i++)
-        {
+        for (int i = 1; i < 1278; i++) {
             // create responseEntity
             ResponseEntity<DSCity> responseEntity = restTemplate.exchange(requestURL + i,
                 HttpMethod.GET,

@@ -20,35 +20,25 @@ public class OktaAuthSecurityConfig extends WebSecurityConfigurerAdapter
     @Override
     protected void configure(HttpSecurity http) throws Exception
     {
-        http.authorizeRequests()
-            .antMatchers("/",
-                "/h2-console/**",
-                "/swagger-resources/**",
-                "/swagger-resource/**",
-                "/swagger-ui.html",
-                "/v2/api-docs",
-                "/webjars/**")
-            .permitAll()
-            .antMatchers(HttpMethod.POST,
-                "/users/**")
-            .permitAll()
-            .antMatchers(HttpMethod.DELETE,
-                "/users/**")
-            .permitAll()
-            .antMatchers(HttpMethod.PUT,
-                "/users/**")
-            .permitAll()
-            .antMatchers("/users/**",
-                "/oauth/revoke-token",
-                "/logout")
-            .permitAll()
-            .antMatchers("/roles/**")
-            .permitAll()
-            .and()
-            .exceptionHandling()
-            .and()
-            .oauth2ResourceServer()
-            .jwt();
+            http.authorizeRequests()
+                .antMatchers("/",
+                    "/h2-console/**",
+                    "/swagger-resources/**",
+                    "/swagger-resource/**",
+                    "/swagger-ui.html",
+                    "/v2/api-docs",
+                    "/webjars/**",
+                    "/createnewuser")
+                .permitAll()
+                .antMatchers("/users/**",
+                    "/cities/**")
+                .authenticated()
+                .antMatchers("/oauth/revoke-token",
+                    "/logout")
+                .authenticated()
+                .and()
+                .oauth2ResourceServer().jwt();
+
 
         // process CORS annotations
         // http.cors();
