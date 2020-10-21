@@ -36,7 +36,6 @@ public class UserController {
      * @return JSON list of all users with a status of OK
      * @see UserService#findAll() UserService.findAll()
      */
-    //    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping(value = "/users",
         produces = "application/json")
     public ResponseEntity<?> listAllUsers() {
@@ -53,7 +52,6 @@ public class UserController {
      * @return JSON object of the user you seek
      * @see UserService#findUserById(long) UserService.findUserById(long)
      */
-    //    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping(value = "/user/{userId}",
         produces = "application/json")
     public ResponseEntity<?> getUserById(
@@ -73,7 +71,6 @@ public class UserController {
      * @return JSON object of the user you seek
      * @see UserService#findByName(String) UserService.findByName(String)
      */
-    //    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping(value = "/user/name/{userName}",
         produces = "application/json")
     public ResponseEntity<?> getUserByName(
@@ -93,7 +90,6 @@ public class UserController {
      * @return A JSON list of users you seek
      * @see UserService#findByNameContaining(String) UserService.findByNameContaining(String)
      */
-    //    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping(value = "/user/name/like/{userName}",
         produces = "application/json")
     public ResponseEntity<?> getUserLikeName(
@@ -119,12 +115,9 @@ public class UserController {
     }
 
     /**
-     * Given a complete User Object, create a new User record and accompanying useremail records
-     * and user role records.
-     * <br> Example: <a href="http://localhost:2019/users/user">http://localhost:2019/users/user</a>
+     * Given a complete User Object, create a new User record.
      *
-     * @param newuser A complete new user to add including emails and roles.
-     *                roles must already exist.
+     * @param newuser A complete new user to add.
      * @return A location header with the URI to the newly created user and a status of CREATED
      * @throws URISyntaxException Exception if something does not work in creating the location header
      * @see UserService#save(User) UserService.save(User)
@@ -170,12 +163,8 @@ public class UserController {
     /**
      * Given a complete User Object
      * Given the user id, primary key, is in the User table,
-     * replace the User record and Useremail records.
-     * Roles are handled through different endpoints
-     * <br> Example: <a href="http://localhost:2019/users/user/15">http://localhost:2019/users/user/15</a>
      *
-     * @param updateUser A complete User including all emails and roles to be used to
-     *                   replace the User. Roles must already exist.
+     * @param updateUser A complete User.
      * @param userid     The primary key of the user you wish to replace.
      * @return status of OK
      * @see UserService#save(User) UserService.save(User)
@@ -197,9 +186,6 @@ public class UserController {
     /**
      * Updates the user record associated with the given id with the provided data. Only the provided fields are
      * affected.
-     * Roles are handled through different endpoints
-     * If an email list is given, it replaces the original emai list.
-     * <br> Example: <a href="http://localhost:2019/users/user/7">http://localhost:2019/users/user/7</a>
      *
      * @param updateUser An object containing values for just the fields that are being updated. All other fields are
      *                   left NULL.
@@ -220,13 +206,11 @@ public class UserController {
     }
 
     /**
-     * Deletes a given user along with associated emails and roles
-     * <br>Example: <a href="http://localhost:2019/users/user/14">http://localhost:2019/users/user/14</a>
+     * Deletes a given user
      *
      * @param id the primary key of the user you wish to delete
      * @return Status of OK
      */
-    //    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping(value = "/user/{id}")
     public ResponseEntity<?> deleteUserById(
         @PathVariable
