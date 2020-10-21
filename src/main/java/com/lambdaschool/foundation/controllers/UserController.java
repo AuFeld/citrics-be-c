@@ -112,7 +112,8 @@ public class UserController {
         @PathVariable
             long userId) {
         User user = userService.findUserById(userId);
-        List<UserCities> myFaves = userService.findCities(user, userId);
+        List<UserCities> myFaves = userService.findCities(user,
+            userId);
         return new ResponseEntity<>(myFaves,
             HttpStatus.OK);
     }
@@ -146,10 +147,25 @@ public class UserController {
             .toUri();
         responseHeaders.setLocation(newUserURI);
 
-        return new ResponseEntity<>(null,
+        return new ResponseEntity<>("User created!",
             responseHeaders,
             HttpStatus.CREATED);
     }
+
+    @PostMapping(value = "/user/add/favorite/{cityId}",
+        consumes = "application/json")
+    public ResponseEntity<?> addFavorite(
+        @Valid
+        @RequestBody
+            User user,
+        @PathVariable
+            Long cityId) throws
+                         URISyntaxException {
+
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
     /**
      * Given a complete User Object
@@ -186,7 +202,7 @@ public class UserController {
      * <br> Example: <a href="http://localhost:2019/users/user/7">http://localhost:2019/users/user/7</a>
      *
      * @param updateUser An object containing values for just the fields that are being updated. All other fields are
-     *                  left NULL.
+     *                   left NULL.
      * @param id         The primary key of the user you wish to update.
      * @return A status of OK
      * @see UserService#update(User, long) UserService.update(User, long)

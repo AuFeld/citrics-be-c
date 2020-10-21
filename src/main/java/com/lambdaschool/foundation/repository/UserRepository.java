@@ -4,6 +4,7 @@ import com.lambdaschool.foundation.models.User;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The CRUD repository connecting User to the rest of the application
@@ -28,4 +29,5 @@ public interface UserRepository
     List<User> findByUsernameContainingIgnoreCase(String name);
 
 
+    User findUserById(long id);
 }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,13 +101,23 @@ public class UserServiceImpl
         User currentUser = findUserById(id);
 
         // update own thing
-        // admin update
         if (helperFunctions.isAuthorizedToMakeChange(currentUser.getUsername())) {
             if (user.getUsername() != null) {
                 currentUser.setUsername(user.getUsername()
                     .toLowerCase());
             }
-
+            if (user.getFavcities()
+                .size() > 0)
+            {
+//                user.getFavcities()
+//                    .clear();
+                for (UserCities c : user.getFavcities())
+                {
+                    UserCities newCity = new UserCities(user,
+                        c.getCity());
+                        user.getFavcities().add(newCity);
+                }
+            }
             return userrepos.save(currentUser);
         } else {
             // note we should never get to this line but is needed for the compiler
